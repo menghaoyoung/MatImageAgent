@@ -1,0 +1,97 @@
+import os
+import csv
+from PIL import Image
+import numpy as np
+from collections import defaultdict
+import time
+
+# Check whether the pixel points meet the GAP condition
+def check_gap_conditions(gray_img, row, col):
+    # Check condition 1: Grayscale value between 5-30 (inclusive)
+    if not (5 <= gray_img[row, col] <= 30):
+        return False
+    
+    # Check condition 2: At least one adjacent pixel has 20 contiguous pixels meeting grayscale condition
+    directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]  # right, down, left, up
+    height, width = gray_img.shape
+    
+    for dr, dc in directions:
+        count = 0
+        r, c = row, col
+        
+        # Check 20 pixels in this direction
+        for _ in range(20):
+            r += dr
+            c += dc
+            
+            # Check if pixel is within image boundaries and meets grayscale condition
+            if 0 <= r < height and 0 <= c < width and 5 <= gray_img[r, c] <= 30:
+                count += 1
+            else:
+                break
+                
+        if count >= 20:
+            return True
+            
+    return False
+
+# Process all images in the directory whose filenames start with "Li_"
+def process_images(input_directory):
+    # Create output directory if it doesn't exist
+    output_directory = os.path.join(os.path.dirname(input_directory), "ALL_RESULT", "CLAUDE", "T1S1", "backup5")
+    os.makedirs(output_directory, exist_ok=True)
+    
+    # Get all image files with "Li_" prefix
+    image_files = [f for f in os.listdir(input_directory) 
+                  if f.startswith("Li_") and (f.lower().endswith('.png') or f.lower().endswith('.jpg'))]
+    
+    for image_file in image_files:
+        print(f"Processing {image_file}...")
+        
+        # Load image and convert to grayscale
+        image_path = os.path.join(input_directory, image_file)
+        img = Image.open(image_path)
+        gray_img = np.array(img.convert('L'))
+        
+        # Create a copy of the original image for highlighting GAP pixels
+        highlight_img = img.copy().convert('RGB')
+        highlight_array = np.array(highlight_img)
+        
+        # Create CSV file
+        image_name = os.path.splitext(image_file)[0]
+        csv_filename = f"{image_name}_gap_analysis.csv"
+        csv_path = os.path.join(output_directory, csv_filename)
+        
+        with open(csv_path, 'w', newline='') as csvfile:
+            csv_writer = csv.writer(csvfile)
+            csv_writer.writerow(['Row', 'Column', 'Grayscale Value', 'GAP Flag'])
+            
+            # Process each pixel
+            height, width = gray_img.shape
+            for row in range(height):
+                for col in range(width):
+                    # Get grayscale value
+                    gray_value = gray_img[row, col]
+                    
+                    # Check if pixel meets GAP conditions
+                    gap_flag = 1 if check_gap_conditions(gray_img, row, col) else 0
+                    
+                    # Write to CSV
+                    csv_writer.writerow([row, col, gray_value, gap_flag])
+                    
+                    # Highlight GAP pixels in red
+                    if gap_flag == 1:
+                        highlight_array[row, col] = [255, 0, 0]
+            
+        # Save highlighted image
+        highlight_img = Image.fromarray(highlight_array)
+        highlight_filename = f"{image_name}_highlighted.png"
+        highlight_path = os.path.join(output_directory, highlight_filename)
+        highlight_img.save(highlight_path)
+        
+        print(f"Completed processing {image_file}")
+
+if __name__ == "__main__":
+    input_directory = r"C:\Users\admin\Desktop\Python_proj\distance_analysis_new\Images"
+    process_images(input_directory)
+    print("Processed all the images!")
