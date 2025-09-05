@@ -1,0 +1,2 @@
+Line segment length (pixels): 64.03124237432849
+Line segment length (physical units, resolution=1.2): 76.83749084919418

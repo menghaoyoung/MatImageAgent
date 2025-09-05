@@ -1,0 +1,4 @@
+Line segment length: 76.84 units
+Start point: (152, 29)
+End point: (136, 91)
+Resolution: 1.2 units/pixel
