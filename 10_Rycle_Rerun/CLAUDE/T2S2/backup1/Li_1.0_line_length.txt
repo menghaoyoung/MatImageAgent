@@ -1,0 +1,4 @@
+Line length: 57.6281 mm
+Start point: (152, 29)
+End point: (136, 91)
+Resolution: 0.9 mm/pixel
