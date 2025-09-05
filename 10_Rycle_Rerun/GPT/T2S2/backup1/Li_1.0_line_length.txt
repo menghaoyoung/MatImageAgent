@@ -1,0 +1,2 @@
+Pixel distance: 64.031242
+Line length (¦Ìm): 57.628118

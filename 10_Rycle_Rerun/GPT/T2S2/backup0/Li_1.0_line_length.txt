@@ -1,0 +1,3 @@
+Line segment length: 57.63 ¦Ìm
+Pixel length: 64.03 pixels
+Resolution: 0.9 ¦Ìm/pixel
