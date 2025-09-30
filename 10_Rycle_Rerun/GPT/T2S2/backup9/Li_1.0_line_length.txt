@@ -1,0 +1,3 @@
+Line length (pixels): 65.2534
+Resolution (¦Ìm/pixel): 1.08
+Line length (¦Ìm): 70.4736
