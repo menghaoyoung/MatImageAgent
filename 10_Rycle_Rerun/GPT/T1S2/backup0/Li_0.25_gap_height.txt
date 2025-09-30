@@ -1,0 +1,2 @@
+Physical dimension parameter: 0.0187 ¦Ìm/pixel
+Max GAP height (¦Ìm): 1.2716
