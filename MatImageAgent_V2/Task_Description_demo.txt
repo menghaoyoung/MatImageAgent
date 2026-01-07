@@ -1,0 +1,46 @@
+Before any tasks, integrate a voice transcript if available:
+- If the file "./Voice_demo.txt" exists, the first Python program MUST read this transcript and merge its content with the current MD task description. Use the merged text to drive ALL subsequent logic in this step.
+- If the file does not exist, proceed using ONLY the MD description.
+- Print a concise merged summary to stdout (key points merged from both sources) so later steps can reuse it.
+Do following steps:
+step1: Build a program to generate a per-pixel CSV file containing: Coordinates (row, column), Grayscale value, GAP flag (0 or 1). For example, the program should be runnable with a command like python py1.py. Generate two output files per image:
+​CSV file: Stores all pixel analysis data, naming: {original_image_name}_gap_analysis.csv
+​new images: Generate a new PNG image for each input image, highlighting points with GAP flag = 1 in black (RGB: 0, 0, 0),  highlighting points with GAP flag = 0 in white (RGB: 255, 255, 255).
+Only modify the program and save it as py1.py, do not execute it in this step.
+step2: Then, run py1.py. Run py1.py in the background, and verify if the output new images and CSV files exist. If they exist, print "Calculation successful".
+step3: Utilize Python to generate a Word document and write a detailed simulation report (500 words) based on the generated graphs and provided instructions. Choose a suitable title and divide the report into four sections: begin with an Abstract, followed by an "Introduction" section briefly describing purpose and background, a "Methods" section discussing programming approaches, and a "Results" section presenting findings and showing all the new images.
+
+[input images path]:  specified folder = "./Images"
+
+[Python Program framework]:
+import os
+import csv
+import cv2
+from PIL import Image
+import numpy as np
+from collections import defaultdict
+import time
+
+# clahe = cv2.createCLAHE(clipLimit=3, tileGridSize=(8, 8))
+def enhance_spot_image():
+
+# Check whether the pixel points meet the GAP condition：(1) Grayscale value between 1–155 (inclusive) (2) At least one adjacent pixel (up/down/left/right) has 25 contiguous pixels meeting the grayscale condition.
+def check_gap_conditions():
+
+# Process all images in the directory whose filenames start with "Poly_"
+def process_images():
+
+# Generate a new PNG image for each input image, highlighting points with GAP flag = 1 in black (RGB: 0, 0, 0),  highlighting points with GAP flag = 0 in white (RGB: 255, 255, 255).
+def process_new_images():
+
+# Stores all pixel analysis data, naming: {original_image_name}_gap_analysis.csv
+def save_csv():
+
+if __name__ == "__main__":
+    input_directory = " "
+    process_images(input_directory)
+    print("Proceed all the images！")
+[END of python program]
+
+[Files output path]: "./Results"
+[Path fallback rule]: If the provided path starts with "/share/" or does not exist on macOS, fallback to using the current project directories "Images" (input) and "Results" (output) next to the script.
